@@ -1,8 +1,9 @@
 package com.example.a06_reciclerviews.modelo;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class ToDo {
+public class ToDo implements Serializable {
 
     private String titulo;
     private String contenido;
@@ -15,11 +16,16 @@ public class ToDo {
         this.completado = completado;
         this.fecha = LocalDate.now();
     }
+    public ToDo(String titulo, String contenido, boolean completado, LocalDate fecha) {
+        this.titulo = titulo;
+        this.contenido = contenido;
+        this.completado = completado;
+        this.fecha = fecha;
+    }
 
     public String getTitulo() {
         return titulo;
     }
-
     public void setTitulo(String titulo) {
         this.titulo = titulo;
     }
@@ -27,7 +33,6 @@ public class ToDo {
     public String getContenido() {
         return contenido;
     }
-
     public void setContenido(String contenido) {
         this.contenido = contenido;
     }
@@ -35,7 +40,6 @@ public class ToDo {
     public boolean isCompletado() {
         return completado;
     }
-
     public void setCompletado(boolean completado) {
         this.completado = completado;
     }
@@ -43,7 +47,6 @@ public class ToDo {
     public LocalDate getFecha() {
         return fecha;
     }
-
     public void setFecha(LocalDate fecha) {
         this.fecha = fecha;
     }

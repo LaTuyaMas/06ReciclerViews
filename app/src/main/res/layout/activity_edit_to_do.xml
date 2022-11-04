@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".EditToDo">
+
+    <EditText
+        android:id="@+id/txtTituloEdittoDo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Titulo"
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/txtContenidoEditToDo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Contenido"
+        android:inputType="textPersonName" />
+
+    <EditText
+        android:id="@+id/txtFechaEditTodo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:hint="Fecha"
+        android:inputType="date" />
+
+    <CheckBox
+        android:id="@+id/cbCompletadoEditToDo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Completada" />
+
+    <Button
+        android:id="@+id/btnConfirmarEditToDo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Confirmar" />
+</LinearLayout>

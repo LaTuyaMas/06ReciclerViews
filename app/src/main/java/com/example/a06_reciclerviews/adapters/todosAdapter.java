@@ -3,16 +3,25 @@ package com.example.a06_reciclerviews.adapters;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.a06_reciclerviews.MainActivity;
 import com.example.a06_reciclerviews.R;
+import com.example.a06_reciclerviews.config.Constantes;
 import com.example.a06_reciclerviews.modelo.ToDo;
 
 import java.util.ArrayList;
@@ -26,6 +35,8 @@ public class todosAdapter extends RecyclerView.Adapter<todosAdapter.TodoVH> {
     private ArrayList<ToDo> objects;
     // Las plantilla para los datos
     private int cardLayout;
+
+    private ActivityResultLauncher<Intent> editarTareaLauncher;
 
 
     public todosAdapter(Context context, ArrayList<ToDo> objects, int cardLayout) {
@@ -67,6 +78,20 @@ public class todosAdapter extends RecyclerView.Adapter<todosAdapter.TodoVH> {
                 confirmaUser("¿Estas seguro que quieres cambiar el estado?", todo).show();
             }
         });
+
+        holder.btnEliminar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                eliminarTarea("¿Estas seguro que quieres eliminar la tarea?", todo).show();
+            }
+        });
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
     }
     // Retornar la cantidad de elementos que hay que instanciar
     @Override
@@ -88,7 +113,22 @@ public class todosAdapter extends RecyclerView.Adapter<todosAdapter.TodoVH> {
                 notifyDataSetChanged();
             }
         });
+        return builder.create();
+    }
+    private android.app.AlertDialog eliminarTarea(String mensage, ToDo todo){
+        android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(context);
 
+        builder.setTitle(mensage);
+        builder.setCancelable(false);
+
+        builder.setNegativeButton("NO", null);
+        builder.setPositiveButton("SI", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                objects.remove(todo);
+                notifyDataSetChanged();
+            }
+        });
         return builder.create();
     }
 
@@ -96,12 +136,53 @@ public class todosAdapter extends RecyclerView.Adapter<todosAdapter.TodoVH> {
 
         TextView lblTitulo, lblContenido, lblFecha;
         ImageButton btnCompletado;
+        Button btnEliminar;
         public TodoVH(@NonNull View itemView) {
             super(itemView);
             lblTitulo = itemView.findViewById(R.id.lblTituloTodoViewModel);
             lblContenido = itemView.findViewById(R.id.lblContenidoTodoViewModel);
             lblFecha = itemView.findViewById(R.id.lblFechaTodoViewModel);
             btnCompletado = itemView.findViewById(R.id.btnCompletadoTodoViewModel);
+            btnEliminar = itemView.findViewById(R.id.btnEliminarToDoViewModel);
         }
+    }
+
+
+    private void inicializaLaunchers(){
+
+        /*
+        editarTareaLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                new ActivityResultCallback<ActivityResult>() {
+                    @Override
+                    public void onActivityResult(ActivityResult result) {
+                        if (result.getResultCode() == RESULT_OK) {
+                            if (result.getData() != null) {
+                                if (result.getData().getExtras() != null) {
+                                    if (result.getData().getExtras().getSerializable(Constantes.TODO) != null) {
+                                        Inmueble inmueble = (Inmueble) result.getData().getExtras().getSerializable(Constantes.INMUEBLE);
+                                        inmueblesList.set(currentlyEditing, inmueble);
+                                        Toast.makeText(MainActivity.this, "Editado con exito", Toast.LENGTH_SHORT).show();
+                                        mostrarInmueblesContenedor();
+                                    }
+                                    else {
+                                        Toast.makeText(MainActivity.this, "El bundle no lleva el tag INMUEBLE", Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                                else {
+                                    Toast.makeText(MainActivity.this, "NO HAY BUNDLE EN EL INTENT", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                            else {
+                                Toast.makeText(MainActivity.this, "NO HAY INTENT EN EL RESULT", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                        else {
+                            Toast.makeText(MainActivity.this, "Ventana Cancelada", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }
+        );
+        */
     }
 }

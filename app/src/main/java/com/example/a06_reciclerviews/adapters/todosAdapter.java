@@ -3,7 +3,6 @@ package com.example.a06_reciclerviews.adapters;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,16 +12,10 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.a06_reciclerviews.MainActivity;
 import com.example.a06_reciclerviews.R;
-import com.example.a06_reciclerviews.config.Constantes;
 import com.example.a06_reciclerviews.modelo.ToDo;
 
 import java.util.ArrayList;
@@ -154,7 +147,7 @@ public class todosAdapter extends RecyclerView.Adapter<todosAdapter.TodoVH> {
         txtContenido.setText(todo.getContenido());
 
         // CREAR BOTONES
-        builder.setNegativeButton("CANCELAR", null);
+        builder.setNegativeButton(context.getString(R.string.btn_negative), null);
         builder.setPositiveButton("EDITAR", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {

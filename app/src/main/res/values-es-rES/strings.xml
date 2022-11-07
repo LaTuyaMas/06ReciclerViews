@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">06 - ReciclerViews</string>
+    <string name="action_settings">Configuraciones</string>
+    <string name="btn_positive_create">CREAR</string>
+    <string name="btn_negative">CANCELAR</string>
+    <string name="create_title">CREAR TAREA</string>
+    <string name="titulo_todo">Título de la Tarea</string>
+    <string name="contenido_todo">Contenido de la Tarea</string>
+</resources>

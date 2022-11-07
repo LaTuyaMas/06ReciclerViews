@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">06 - ReciclerViews</string>
+    <string name="action_settings">Ambientacione</string>
+    <string name="btn_positive_create">CREARE</string>
+    <string name="btn_negative">ANULLA</string>
+    <string name="create_title">CREARE TODO</string>
+    <string name="titulo_todo">Tituli ToDo</string>
+    <string name="contenido_todo">ToDo Contenit</string>
+</resources>

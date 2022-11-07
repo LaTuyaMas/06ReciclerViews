@@ -1,6 +1,7 @@
 package com.example.a06_reciclerviews;
 
 import android.content.DialogInterface;
+import android.content.res.Configuration;
 import android.os.Bundle;
 
 import com.example.a06_reciclerviews.adapters.todosAdapter;
@@ -10,6 +11,7 @@ import com.example.a06_reciclerviews.modelo.ToDo;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -42,9 +44,17 @@ public class MainActivity extends AppCompatActivity {
 
         // crearTodos();
 
-        adapter = new todosAdapter(MainActivity.this, todosList, R.layout.todo_model_view);
-        layoutManager = new LinearLayoutManager(MainActivity.this);
+        // Orientaciones del movil
+        // getResources().getConfiguration().orientation
+        // PORTRAIT -> Vertical
+        // LANDSCAPE -> Horizontal
 
+        int columnas;
+
+        columnas = getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT ? 1 : 2;
+
+        adapter = new todosAdapter(MainActivity.this, todosList, R.layout.todo_model_view);
+        layoutManager = new GridLayoutManager(MainActivity.this, columnas);
         binding.contentMain.contenedor.setAdapter(adapter);
         binding.contentMain.contenedor.setLayoutManager(layoutManager);
 
@@ -61,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
     //Ventana emergente para crear un nuevo ToDo
     private AlertDialog createToDo() {
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-        builder.setTitle("Añadir ToDo");
+        builder.setTitle(getString(R.string.create_title));
         builder.setCancelable(false);
         // TENEMOS QUE CREAR UN LAYOUT
         View alertView = LayoutInflater.from(MainActivity.this). inflate(R.layout.todo_model_alert, null);
@@ -69,8 +79,8 @@ public class MainActivity extends AppCompatActivity {
         TextView txtContenido = alertView.findViewById(R.id.txtContenidoToDoModelAlert);
         builder.setView(alertView);
         // CREAR BOTONES
-        builder.setNegativeButton("CANCELAR", null);
-        builder.setPositiveButton("AÑADIR", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(getResources().getString(R.string.btn_negative), null);
+        builder.setPositiveButton(getResources().getString(R.string.btn_positive_create), new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 if (!txtTitulo.getText().toString().isEmpty() && !txtContenido.getText().toString().isEmpty()){
@@ -87,6 +97,7 @@ public class MainActivity extends AppCompatActivity {
         return builder.create();
     }
 
+    // Sin recycler View
     private void crearTodos() {
         for (int i = 0; i < 1000; i++) {
             todosList.add(new ToDo("Tarea "+i, "Contenido "+i, false));

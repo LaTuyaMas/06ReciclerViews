@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:ems="10"
-        android:hint="Titulo"
+        android:hint="@string/titulo_todo"
         android:inputType="textPersonName"
         tools:ignore="TouchTargetSizeCheck" />
 
@@ -22,7 +22,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:ems="10"
-        android:hint="Contenido"
+        android:hint="@string/contenido_todo"
         android:inputType="textPersonName"
         tools:ignore="TouchTargetSizeCheck" />
 </LinearLayout>

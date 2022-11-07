@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
     //Ventana emergente para crear un nuevo ToDo
     private AlertDialog createToDo() {
         AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-        builder.setTitle("Add new ToDo");
+        builder.setTitle("Añadir ToDo");
         builder.setCancelable(false);
         // TENEMOS QUE CREAR UN LAYOUT
         View alertView = LayoutInflater.from(MainActivity.this). inflate(R.layout.todo_model_alert, null);
@@ -69,8 +69,8 @@ public class MainActivity extends AppCompatActivity {
         TextView txtContenido = alertView.findViewById(R.id.txtContenidoToDoModelAlert);
         builder.setView(alertView);
         // CREAR BOTONES
-        builder.setNegativeButton("Cancelar", null);
-        builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton("CANCELAR", null);
+        builder.setPositiveButton("AÑADIR", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 if (!txtTitulo.getText().toString().isEmpty() && !txtContenido.getText().toString().isEmpty()){

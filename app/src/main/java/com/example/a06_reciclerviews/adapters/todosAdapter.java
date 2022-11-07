@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,8 +36,6 @@ public class todosAdapter extends RecyclerView.Adapter<todosAdapter.TodoVH> {
     private ArrayList<ToDo> objects;
     // Las plantilla para los datos
     private int cardLayout;
-
-    private ActivityResultLauncher<Intent> editarTareaLauncher;
 
 
     public todosAdapter(Context context, ArrayList<ToDo> objects, int cardLayout) {
@@ -82,14 +81,17 @@ public class todosAdapter extends RecyclerView.Adapter<todosAdapter.TodoVH> {
         holder.btnEliminar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                eliminarTarea("¿Estas seguro que quieres eliminar la tarea?", todo).show();
+                eliminarTarea(todo, holder.getAdapterPosition()).show();
             }
         });
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                // AlertDialog con todos los campos a editar
+                // Necesita el todo
+                // Necesito la posición
+                editToDo(todo, holder.getAdapterPosition()).show();
             }
         });
     }
@@ -115,18 +117,55 @@ public class todosAdapter extends RecyclerView.Adapter<todosAdapter.TodoVH> {
         });
         return builder.create();
     }
-    private android.app.AlertDialog eliminarTarea(String mensage, ToDo todo){
+    private android.app.AlertDialog eliminarTarea(ToDo todo, int position){
         android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(context);
 
-        builder.setTitle(mensage);
         builder.setCancelable(false);
+        TextView mensaje = new TextView(context);
+        mensaje.setText("¿Estas seguro que eso no se puede editar?");
+        mensaje.setTextSize(24);
+        mensaje.setTextColor(Color.RED);
+        mensaje.setPadding(100,100,100,100);
+        builder.setView(mensaje);
 
         builder.setNegativeButton("NO", null);
         builder.setPositiveButton("SI", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 objects.remove(todo);
-                notifyDataSetChanged();
+                notifyItemRemoved(position);
+            }
+        });
+        return builder.create();
+    }
+
+    private androidx.appcompat.app.AlertDialog editToDo(ToDo todo, int position) {
+        androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(context);
+        builder.setTitle("Editar ToDo");
+        builder.setCancelable(false);
+
+        // TENEMOS QUE CREAR UN LAYOUT
+        View alertView = LayoutInflater.from(context). inflate(R.layout.todo_model_alert, null);
+        TextView txtTitulo = alertView.findViewById(R.id.txtTituloToDoModelAlert);
+        TextView txtContenido = alertView.findViewById(R.id.txtContenidoToDoModelAlert);
+        builder.setView(alertView);
+
+        txtTitulo.setText(todo.getTitulo());
+        txtContenido.setText(todo.getContenido());
+
+        // CREAR BOTONES
+        builder.setNegativeButton("CANCELAR", null);
+        builder.setPositiveButton("EDITAR", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                if (!txtTitulo.getText().toString().isEmpty() && !txtContenido.getText().toString().isEmpty()){
+                    todo.setContenido(txtContenido.getText().toString());
+                    todo.setTitulo(txtTitulo.getText().toString());
+                    notifyItemChanged(position);
+                }
+                else {
+                    Toast.makeText(context, "FALTAN DATOS", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         return builder.create();
@@ -145,44 +184,5 @@ public class todosAdapter extends RecyclerView.Adapter<todosAdapter.TodoVH> {
             btnCompletado = itemView.findViewById(R.id.btnCompletadoTodoViewModel);
             btnEliminar = itemView.findViewById(R.id.btnEliminarToDoViewModel);
         }
-    }
-
-
-    private void inicializaLaunchers(){
-
-        /*
-        editarTareaLauncher = registerForActivityResult(
-                new ActivityResultContracts.StartActivityForResult(),
-                new ActivityResultCallback<ActivityResult>() {
-                    @Override
-                    public void onActivityResult(ActivityResult result) {
-                        if (result.getResultCode() == RESULT_OK) {
-                            if (result.getData() != null) {
-                                if (result.getData().getExtras() != null) {
-                                    if (result.getData().getExtras().getSerializable(Constantes.TODO) != null) {
-                                        Inmueble inmueble = (Inmueble) result.getData().getExtras().getSerializable(Constantes.INMUEBLE);
-                                        inmueblesList.set(currentlyEditing, inmueble);
-                                        Toast.makeText(MainActivity.this, "Editado con exito", Toast.LENGTH_SHORT).show();
-                                        mostrarInmueblesContenedor();
-                                    }
-                                    else {
-                                        Toast.makeText(MainActivity.this, "El bundle no lleva el tag INMUEBLE", Toast.LENGTH_SHORT).show();
-                                    }
-                                }
-                                else {
-                                    Toast.makeText(MainActivity.this, "NO HAY BUNDLE EN EL INTENT", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                            else {
-                                Toast.makeText(MainActivity.this, "NO HAY INTENT EN EL RESULT", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                        else {
-                            Toast.makeText(MainActivity.this, "Ventana Cancelada", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                }
-        );
-        */
     }
 }
